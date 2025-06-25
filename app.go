@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"poketower-client/service/database"
+	"poketower-client/service/model"
+	"poketower-client/service/pokemon"
 )
 
 // App struct
@@ -24,4 +27,15 @@ func (a *App) startup(ctx context.Context) {
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
+}
+
+func (a *App) GetStartingPokemons() []model.Pokemon {
+	_, err := database.OpenDb()
+	if err != nil {
+		fmt.Println("Failed to connect to the database:", err)
+		return nil
+	}
+
+	result := pokemon.GetStartingPokemons()
+	return result
 }

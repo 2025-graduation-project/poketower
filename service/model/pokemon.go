@@ -7,21 +7,21 @@ import (
 )
 
 type Pokemon struct {
-	ID         int    `gorm:"primaryKey"`
-	Name       string `gorm:"not null"`
-	HP         uint16 `gorm:"not null"`
-	Attack     uint16 `gorm:"not null"`
-	Defense    uint16 `gorm:"not null"`
-	SpAttack   uint16 `gorm:"column:sp_attack;not null"`
-	SpDefense  uint16 `gorm:"column:sp_defense;not null"`
-	Speed      uint16 `gorm:"not null"`
-	IsStarting bool   `gorm:"column:is_starting;default:false"`
-	IsLegend   bool   `gorm:"column:is_legend;default:false"`
+	ID         int    `gorm:"primaryKey" json:"id"`
+	Name       string `gorm:"not null" json:"name"`
+	HP         uint16 `gorm:"not null" json:"hp"`
+	Attack     uint16 `gorm:"not null" json:"attack"`
+	Defense    uint16 `gorm:"not null" json:"defense"`
+	SpAttack   uint16 `gorm:"column:sp_attack;not null" json:"spAttack"`
+	SpDefense  uint16 `gorm:"column:sp_defense;not null" json:"spDefense"`
+	Speed      uint16 `gorm:"not null" json:"speed"`
+	IsStarting bool   `gorm:"column:is_starting;default:false" json:"isStarting"`
+	IsLegend   bool   `gorm:"column:is_legend;default:false" json:"isLegend"`
 
-	Types []Type `gorm:"many2many:pokemon_types"`
-	Moves []Move `gorm:"many2many:pokemon_moves"`
+	Types []Type `gorm:"many2many:pokemon_types" json:"types"`
+	Moves []Move `gorm:"many2many:pokemon_moves" json:"moves"`
 
-	MaxHP uint16 `gorm:"-"`
+	MaxHP uint16 `gorm:"-" json:"maxHp"`
 }
 
 func (p *Pokemon) SetInitialStats() {
