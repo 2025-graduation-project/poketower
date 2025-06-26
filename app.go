@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"poketower-client/service/battle"
 	"poketower-client/service/database"
 	"poketower-client/service/model"
 	"poketower-client/service/pokemon"
@@ -37,5 +38,14 @@ func (a *App) GetStartingPokemons() []model.Pokemon {
 	}
 
 	result := pokemon.GetStartingPokemons()
+
 	return result
+}
+
+func (a *App) ChooseStarting(id []int) {
+	pokemon.ChooseStarting(id)
+}
+
+func (a *App) GetCurrentPokemon() []model.Pokemon {
+	return battle.PlayerPokemons
 }
