@@ -1,14 +1,16 @@
-import React from 'react'
-import {createRoot} from 'react-dom/client'
-import './style.css'
-import App from './App'
+import './style.css';
 
-const container = document.getElementById('root')
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 
-const root = createRoot(container!)
+import Game from './app/Game';
+
+const container = document.getElementById('root');
+
+const root = createRoot(container!);
 
 root.render(
-    <React.StrictMode>
-        <App/>
-    </React.StrictMode>
-)
+  <React.StrictMode>
+    <Game />
+  </React.StrictMode>,
+);
