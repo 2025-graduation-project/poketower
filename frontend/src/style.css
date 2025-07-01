@@ -24,3 +24,66 @@ body {
   margin: 0;
   font-family: 'PFStardust';
 }
+
+/* Layout */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.w-screen {
+  width: 100vw;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+.gap-40 {
+  gap: 40px;
+}
+
+/* Background */
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
+}
+
+.bg-no-repeat {
+  background-repeat: no-repeat;
+}
+
+/* Text */
+.text-white {
+  color: white;
+}
+
+.text-24 {
+  font-size: 24px;
+}
+
+.text-48 {
+  font-size: 48px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Margin */
+
+/* Padding */
