@@ -87,3 +87,8 @@ body {
 /* Margin */
 
 /* Padding */
+
+/* Interaction */
+.cursor-pointer {
+  cursor: pointer;
+}
