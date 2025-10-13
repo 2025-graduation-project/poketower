@@ -3,12 +3,13 @@ package database
 import (
 	"embed"
 	"errors"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
+
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 //go:embed master.db
@@ -27,7 +28,7 @@ func OpenDb() (*gorm.DB, error) {
 		return nil, errors.New("failed to get user config directory")
 	}
 
-	appDir := filepath.Join(configDir, "YourAppName")
+	appDir := filepath.Join(configDir, "poketower")
 	if err := os.MkdirAll(appDir, 0755); err != nil {
 		return nil, err
 	}
