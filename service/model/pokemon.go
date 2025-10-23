@@ -3,7 +3,10 @@ package model
 import (
 	"fmt"
 	"math/rand"
+	"poketower-client/service/database"
 	"poketower-client/service/stat"
+
+	"gorm.io/gorm"
 )
 
 type Pokemon struct {
@@ -82,4 +85,17 @@ func (p *Pokemon) DecreaseHealth(damage uint16) {
 
 func (Pokemon) TableName() string {
 	return "pokemons"
+}
+
+func FindByTypeID(typeID int) ([]Pokemon, error) {
+	var pokemons []Pokemon
+
+	err := database.DB.Preload("Types").Preload("Moves", func(db *gorm.DB) *gorm.DB {
+		return db.Where("category <> ?", 3).Where("power IS NOT NULL")
+	}).Preload("Moves.Type").
+		Joins("JOIN pokemon_types ON pokemon_types.pokemon_id = pokemons.id").
+		Where("pokemon_types.type_id = ?", typeID).
+		Find(&pokemons).Error
+
+	return pokemons, err
 }
