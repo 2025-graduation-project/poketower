@@ -131,9 +131,8 @@ const StarterSelect = ({ onConfirm }: StarterSelectProps) => {
         <button onClick={onSpin} disabled={isSpinning}>
           {isSpinning ? '추첨중...' : '추첨하기'}
         </button>
+        <button onClick={() => handleConfirm()}>선택 완료</button>
       </div>
-
-      <div onClick={() => handleConfirm()}>선택 완료</div>
 
       <div>스타팅 포켓몬 목록</div>
       <div className="grid grid-cols-auto-fill gap-16 p-20">
