@@ -1,6 +1,5 @@
-import welcomeBg from '@/assets/img/welcomeBg.png';
-
 import { WelcomeScreenProps } from './type';
+import welcomeBg from '@/assets/img/welcomeBg.png';
 
 const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
   return (
