@@ -46,12 +46,20 @@ body {
   flex-direction: row;
 }
 
+.items-start {
+  align-items: flex-start;
+}
+
 .items-center {
   align-items: center;
 }
 
 .justify-center {
   justify-content: center;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
 .w-60 {
@@ -62,8 +70,16 @@ body {
   width: 100vw;
 }
 
+.w-full {
+  width: 100%;
+}
+
 .h-screen {
   height: 100vh;
+}
+
+.h-full {
+  height: 100%;
 }
 
 .p-20 {
@@ -78,6 +94,10 @@ body {
   gap: 40px;
 }
 
+.object-contain {
+  object-fit: contain;
+}
+
 /* Background */
 .bg-cover {
   background-size: cover;
@@ -89,6 +109,11 @@ body {
 
 .bg-no-repeat {
   background-repeat: no-repeat;
+}
+
+/* Border */
+.rounded-4 {
+  border-radius: 4px;
 }
 
 /* Text */
@@ -107,10 +132,6 @@ body {
 .text-center {
   text-align: center;
 }
-
-/* Margin */
-
-/* Padding */
 
 /* Interaction */
 .cursor-pointer {
