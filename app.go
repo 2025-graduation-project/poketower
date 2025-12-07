@@ -50,3 +50,35 @@ func (a *App) DrawStarting() []model.Pokemon {
 func (a *App) GetCurrentPokemon() []model.Pokemon {
 	return battle.PlayerPokemons
 }
+
+// Battle API
+
+// InitBattle 배틀 초기화
+func (a *App) InitBattle() error {
+	return battle.InitBattle()
+}
+
+// GetBattleState 현재 배틀 상태 조회
+func (a *App) GetBattleState() *battle.BattleState {
+	return battle.GetBattleState()
+}
+
+// PlayerUseMove 플레이어가 기술 사용
+func (a *App) PlayerUseMove(moveIndex int) error {
+	return battle.PlayerUseMove(moveIndex)
+}
+
+// SwitchPlayerPokemon 플레이어 포켓몬 교체
+func (a *App) SwitchPlayerPokemon(pokemonIndex int) error {
+	return battle.SwitchPlayerPokemon(pokemonIndex)
+}
+
+// GetPlayerPokemons 플레이어 포켓몬 목록 조회
+func (a *App) GetPlayerPokemons() []model.Pokemon {
+	return battle.PlayerPokemons
+}
+
+// GetEnemyPokemons 적 포켓몬 목록 조회
+func (a *App) GetEnemyPokemons() []model.Pokemon {
+	return battle.EnemyPokemons
+}
