@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"poketower-client/service/battle"
 	"poketower-client/service/database"
+	"poketower-client/service/leaderboard"
 	"poketower-client/service/model"
 	"poketower-client/service/pokemon"
 	"time"
@@ -25,6 +26,13 @@ func (a *App) startup(ctx context.Context) {
 		fmt.Println("Failed to connect to the database:", err)
 		panic(err)
 	}
+
+	// 리더보드 테이블 초기화
+	err = leaderboard.InitLeaderboard()
+	if err != nil {
+		fmt.Println("Failed to initialize leaderboard:", err)
+	}
+
 	a.ctx = ctx
 }
 
@@ -160,4 +168,26 @@ func (a *App) SelectPokemonsFromEncountered(indices []int) error {
 // GetPCCount PC 포켓몬 수 조회
 func (a *App) GetPCCount() int {
 	return battle.GetPCCount()
+}
+
+// Leaderboard API
+
+// GetLeaderboard 리더보드 조회 (상위 N개)
+func (a *App) GetLeaderboard(limit int) ([]model.Leaderboard, error) {
+	return leaderboard.GetLeaderboard(limit)
+}
+
+// GetTopLeaderboard 상위 N개 리더보드 조회
+func (a *App) GetTopLeaderboard(top int) ([]model.Leaderboard, error) {
+	return leaderboard.GetTopLeaderboard(top)
+}
+
+// GetAllLeaderboard 전체 리더보드 조회
+func (a *App) GetAllLeaderboard() ([]model.Leaderboard, error) {
+	return leaderboard.GetAllLeaderboard()
+}
+
+// GetLeaderboardCount 리더보드 엔트리 개수
+func (a *App) GetLeaderboardCount() (int64, error) {
+	return leaderboard.GetLeaderboardCount()
 }

@@ -3,6 +3,7 @@ package battle
 import (
 	"errors"
 	"fmt"
+	"poketower-client/service/leaderboard"
 	"poketower-client/service/model"
 )
 
@@ -146,7 +147,7 @@ func CompleteStage() error {
 	return nil
 }
 
-// FailStage 스테이지 실패 처리
+// FailStage 스테이지 실패 처리 (리더보드에 자동 저장)
 func FailStage() error {
 	if CurrentStageState == nil {
 		return errors.New("스테이지가 초기화되지 않았습니다")
@@ -154,6 +155,30 @@ func FailStage() error {
 
 	if CurrentBattle == nil || CurrentBattle.BattleResult != "lose" {
 		return errors.New("배틀에서 패배하지 않았습니다")
+	}
+
+	// 현재 층 수 계산
+	currentFloor := GetCurrentFloorNumber()
+
+	// 현재 사용 중인 포켓몬 3마리 이름 가져오기
+	pokemon1 := ""
+	pokemon2 := ""
+	pokemon3 := ""
+
+	if len(PlayerPokemons) > 0 {
+		pokemon1 = PlayerPokemons[0].Name
+	}
+	if len(PlayerPokemons) > 1 {
+		pokemon2 = PlayerPokemons[1].Name
+	}
+	if len(PlayerPokemons) > 2 {
+		pokemon3 = PlayerPokemons[2].Name
+	}
+
+	// 리더보드에 저장
+	err := leaderboard.SaveLeaderboard(currentFloor, pokemon1, pokemon2, pokemon3)
+	if err != nil {
+		return fmt.Errorf("리더보드 저장 실패: %w", err)
 	}
 
 	CurrentStageState.IsStageActive = false
