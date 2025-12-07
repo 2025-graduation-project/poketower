@@ -76,9 +76,64 @@ func TestGameFlow(t *testing.T) {
 			t.Fatalf("Failed to init battle: %v", err)
 		}
 
-		// 배틀 승리로 설정 (테스트용)
-		CurrentBattle.BattleResult = "win"
-		CurrentBattle.IsActive = false
+		// 배틀 시뮬레이션 (최대 20턴)
+		turnCount := 0
+		maxTurns := 20
+
+		for CurrentBattle.IsActive && turnCount < maxTurns {
+			turnCount++
+			logsBefore := len(CurrentBattle.BattleLogs)
+
+			if CurrentBattle.WaitingForSwitch {
+				// 포켓몬 교체
+				nextIndex := GetNextAlivePokemonIndex(PlayerPokemons, CurrentBattle.PlayerCurrentIndex)
+				if nextIndex != -1 {
+					SwitchPlayerPokemon(nextIndex)
+				}
+			} else if CurrentBattle.IsPlayerTurn {
+				// 플레이어 턴
+				attacker := GetCurrentPlayerPokemon()
+				if attacker != nil && len(attacker.Moves) > 0 {
+					PlayerUseMove(0)
+				}
+			}
+
+			// 새로 추가된 로그 출력
+			for i := logsBefore; i < len(CurrentBattle.BattleLogs); i++ {
+				log := CurrentBattle.BattleLogs[i]
+				t.Logf("  %s", log.Message)
+			}
+		}
+
+		if CurrentBattle.BattleResult == "lose" {
+			t.Logf("\nBattle lost at floor %d", floor)
+
+			// 게임 종료 처리
+			t.Log("\n=== Game Over - Saving to Leaderboard ===")
+			err = FailStage()
+			if err != nil {
+				t.Fatalf("Failed to save to leaderboard: %v", err)
+			}
+
+			currentFloor := GetCurrentFloorNumber()
+			t.Logf("Failed at floor: %d", currentFloor)
+
+			// 리더보드 확인
+			entries, err := leaderboard.GetTopLeaderboard(5)
+			if err != nil {
+				t.Fatalf("Failed to get leaderboard: %v", err)
+			}
+
+			t.Log("\n=== Leaderboard ===")
+			for i, entry := range entries {
+				t.Logf("[%d] Floor %d | %s, %s, %s | %s",
+					i+1, entry.Floor, entry.Pokemon1, entry.Pokemon2, entry.Pokemon3,
+					entry.EndTime.Format("2006-01-02 15:04:05"))
+			}
+
+			t.Log("\n=== Game Flow Test Completed ===")
+			return
+		}
 
 		// 층 완료
 		err = CompleteFloor()
@@ -86,7 +141,7 @@ func TestGameFlow(t *testing.T) {
 			t.Fatalf("Failed to complete floor: %v", err)
 		}
 
-		t.Logf("Floor %d completed", floor)
+		t.Logf("Floor %d completed in %d turns\n", floor, turnCount)
 	}
 
 	t.Log("\n=== 4. 15마리 중 5마리 선택하여 PC에 저장 ===")
@@ -137,13 +192,44 @@ func TestGameFlow(t *testing.T) {
 	t.Logf("Floor 6 started with enemies: %s, %s, %s",
 		EnemyPokemons[0].Name, EnemyPokemons[1].Name, EnemyPokemons[2].Name)
 
-	t.Log("\n=== 7. 전투 불능 시 게임 종료 테스트 ===")
+	t.Log("\n=== 7. 6층 배틀 진행 ===")
 
 	// 배틀 초기화
 	err = InitBattle()
 	if err != nil {
 		t.Fatalf("Failed to init battle: %v", err)
 	}
+
+	// 배틀 시뮬레이션 (몇 턴만 진행)
+	turnCount := 0
+	maxTurns := 5
+
+	for CurrentBattle.IsActive && turnCount < maxTurns {
+		turnCount++
+		logsBefore := len(CurrentBattle.BattleLogs)
+
+		if CurrentBattle.WaitingForSwitch {
+			nextIndex := GetNextAlivePokemonIndex(PlayerPokemons, CurrentBattle.PlayerCurrentIndex)
+			if nextIndex != -1 {
+				SwitchPlayerPokemon(nextIndex)
+			}
+		} else if CurrentBattle.IsPlayerTurn {
+			attacker := GetCurrentPlayerPokemon()
+			if attacker != nil && len(attacker.Moves) > 0 {
+				PlayerUseMove(0)
+			}
+		}
+
+		// 로그 출력
+		for i := logsBefore; i < len(CurrentBattle.BattleLogs); i++ {
+			log := CurrentBattle.BattleLogs[i]
+			t.Logf("  %s", log.Message)
+		}
+	}
+
+	t.Logf("Battle progressed for %d turns", turnCount)
+
+	t.Log("\n=== 8. 강제로 전투 불능 처리하여 게임 종료 테스트 ===")
 
 	// 모든 포켓몬 전투 불능 상태로 만들기
 	for i := range PlayerPokemons {
