@@ -82,3 +82,82 @@ func (a *App) GetPlayerPokemons() []model.Pokemon {
 func (a *App) GetEnemyPokemons() []model.Pokemon {
 	return battle.EnemyPokemons
 }
+
+// Stage API
+
+// InitGame 게임 초기화
+func (a *App) InitGame() error {
+	return battle.InitGame()
+}
+
+// StartFloor 층 시작
+func (a *App) StartFloor() error {
+	return battle.StartFloor()
+}
+
+// CompleteFloor 층 완료
+func (a *App) CompleteFloor() error {
+	return battle.CompleteFloor()
+}
+
+// CompleteStage 스테이지 완료
+func (a *App) CompleteStage() error {
+	return battle.CompleteStage()
+}
+
+// FailStage 스테이지 실패
+func (a *App) FailStage() error {
+	return battle.FailStage()
+}
+
+// GetStageState 스테이지 상태 조회
+func (a *App) GetStageState() *battle.StageState {
+	return battle.GetStageState()
+}
+
+// GetEncounteredPokemon 출현한 포켓몬 목록 조회
+func (a *App) GetEncounteredPokemon() []model.Pokemon {
+	return battle.GetEncounteredPokemon()
+}
+
+// GetCurrentFloorNumber 현재 총 층 수 조회
+func (a *App) GetCurrentFloorNumber() int {
+	return battle.GetCurrentFloorNumber()
+}
+
+// SelectPokemonsForNextStage 다음 스테이지용 포켓몬 선택
+func (a *App) SelectPokemonsForNextStage(pokemonIDs []int) error {
+	return battle.SelectPokemonsForNextStage(pokemonIDs)
+}
+
+// PC API
+
+// GetPCPokemons PC 포켓몬 목록 조회
+func (a *App) GetPCPokemons() []model.Pokemon {
+	return battle.GetPCPokemons()
+}
+
+// GetPCPokemonsSortedByID PC 포켓몬 도감번호순 조회
+func (a *App) GetPCPokemonsSortedByID() []model.Pokemon {
+	return battle.GetPCPokemonsSortedByID()
+}
+
+// GetPCPokemonsByType PC 포켓몬 타입별 조회
+func (a *App) GetPCPokemonsByType(typeID int) []model.Pokemon {
+	return battle.GetPCPokemonsByType(typeID)
+}
+
+// GetPCPokemonsByTypeGrouped PC 포켓몬 타입별 그룹화 조회
+func (a *App) GetPCPokemonsByTypeGrouped() map[string][]model.Pokemon {
+	return battle.GetPCPokemonsByTypeGrouped()
+}
+
+// SelectPokemonsFromEncountered 출현한 포켓몬 중 선택하여 PC에 추가
+func (a *App) SelectPokemonsFromEncountered(indices []int) error {
+	return battle.SelectPokemonsFromEncountered(indices)
+}
+
+// GetPCCount PC 포켓몬 수 조회
+func (a *App) GetPCCount() int {
+	return battle.GetPCCount()
+}
