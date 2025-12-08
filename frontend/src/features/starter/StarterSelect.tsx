@@ -25,8 +25,11 @@ const StarterSelect = ({ onConfirm }: StarterSelectProps) => {
     GetStartingPokemons().then((data) => {
       setPokemons(data);
     });
+
+    const currentIntervals = intervalsRef.current;
+
     return () => {
-      intervalsRef.current.forEach((id) => {
+      currentIntervals.forEach((id) => {
         if (id) clearInterval(id);
       });
     };
