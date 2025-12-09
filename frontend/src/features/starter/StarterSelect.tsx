@@ -74,11 +74,9 @@ const StarterSelect = ({ onConfirm }: StarterSelectProps) => {
     startReelRandomize(1, 60);
     startReelRandomize(2, 70);
 
-    console.log('추첨 시작', new Date());
     let results: Pokemon[] = [];
     try {
       results = await DrawStarting();
-      console.log('추첨 완료', new Date(), results);
       setSelected(results.map((r) => r.id));
     } catch (e) {
       console.error(e);
@@ -98,10 +96,6 @@ const StarterSelect = ({ onConfirm }: StarterSelectProps) => {
       () => {
         setSelected(results.map((r) => r.id));
         setIsSpinning(false);
-        console.log(
-          '추첨 결과:',
-          results.map((r) => r.id),
-        );
       },
       Math.max(...stopDelays) + 200,
     );
