@@ -15,7 +15,6 @@ const StarterSelect = ({ onConfirm }: StarterSelectProps) => {
     try {
       await ChooseStarting(selected);
       onConfirm();
-      console.log('포켓몬 선택 완료: ', selected);
     } catch (e) {
       console.error('포켓몬 선택 실패: ', e);
     }
