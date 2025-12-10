@@ -1,3 +1,3 @@
-export type StarterSelectProps = {
+export interface StarterSelectProps {
   onConfirm: () => void;
-};
+}

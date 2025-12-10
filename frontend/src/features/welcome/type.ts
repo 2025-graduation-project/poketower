@@ -1,3 +1,3 @@
-export type WelcomeScreenProps = {
+export interface WelcomeScreenProps {
   onStart: () => void;
-};
+}

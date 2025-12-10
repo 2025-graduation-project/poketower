@@ -1,3 +1,3 @@
-export type BattleProps = {
+export interface BattleProps {
   onRestart: () => void;
-};
+}
