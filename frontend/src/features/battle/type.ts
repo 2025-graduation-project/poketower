@@ -1,19 +1,33 @@
-import { Pokemon } from '@/entities/pokemon/type';
+import { Pokemon, Type } from '@/entities/pokemon/type';
 
 export interface BattleProps {
-  onRestart: () => void;
-}
-
-export interface StageTypeInfo {
-  id: number;
-  name: string;
+  onStageComplete: () => void;
+  onGameOver: () => void;
 }
 
 export interface StageState {
   currentFloor: number;
   encounteredPokemon: Pokemon[];
   isStageActive: boolean;
-  nextStageType: StageTypeInfo;
+  nextStageType: Type;
   stageNumber: number;
-  stageType: StageTypeInfo;
+  stageType: Type;
+}
+
+export interface BattleLog {
+  message: string;
+  damage?: number;
+  effectiveness?: number;
+  isCritical?: boolean;
+}
+
+export interface BattleState {
+  isActive: boolean;
+  turn: number;
+  playerCurrentIndex: number;
+  enemyCurrentIndex: number;
+  battleLogs: BattleLog[];
+  isPlayerTurn: boolean;
+  battleResult: string;
+  waitingForSwitch: boolean;
 }

@@ -9,10 +9,12 @@ import (
 
 // BattleLog 배틀 로그 항목
 type BattleLog struct {
-	Message       string  `json:"message"`
-	Damage        uint16  `json:"damage,omitempty"`
-	Effectiveness float32 `json:"effectiveness,omitempty"`
-	IsCritical    bool    `json:"isCritical,omitempty"`
+	Message        string          `json:"message"`
+	Damage         uint16          `json:"damage,omitempty"`
+	Effectiveness  float32         `json:"effectiveness,omitempty"`
+	IsCritical     bool            `json:"isCritical,omitempty"`
+	PlayerPokemons []model.Pokemon `json:"playerPokemons,omitempty"`
+	EnemyPokemons  []model.Pokemon `json:"enemyPokemons,omitempty"`
 }
 
 // BattleState 배틀 상태
@@ -46,21 +48,20 @@ func InitBattle() error {
 		WaitingForSwitch:   false,
 	}
 
-	// 속도에 따라 선공 결정
-	playerSpeed := PlayerPokemons[0].Speed
-	enemySpeed := EnemyPokemons[0].Speed
+	// 배틀 시작 시 항상 플레이어 턴으로 시작 (선공권은 기술 사용 시 결정)
+	CurrentBattle.IsPlayerTurn = true
 
-	if enemySpeed > playerSpeed {
-		CurrentBattle.IsPlayerTurn = false
-		CurrentBattle.BattleLogs = append(CurrentBattle.BattleLogs,
-			BattleLog{Message: fmt.Sprintf("상대의 %s가 선공을 잡았다!", EnemyPokemons[0].Name)})
-		// 적이 선공이면 적 턴 실행
-		EnemyTurn()
-	} else {
-		CurrentBattle.IsPlayerTurn = true
-		CurrentBattle.BattleLogs = append(CurrentBattle.BattleLogs,
-			BattleLog{Message: fmt.Sprintf("%s가 선공을 잡았다!", PlayerPokemons[0].Name)})
-	}
+	// 초기 포켓몬 상태 스냅샷 저장
+	playerSnapshot := make([]model.Pokemon, len(PlayerPokemons))
+	copy(playerSnapshot, PlayerPokemons)
+	enemySnapshot := make([]model.Pokemon, len(EnemyPokemons))
+	copy(enemySnapshot, EnemyPokemons)
+
+	CurrentBattle.BattleLogs = append(CurrentBattle.BattleLogs, BattleLog{
+		Message:        "배틀 시작!",
+		PlayerPokemons: playerSnapshot,
+		EnemyPokemons:  enemySnapshot,
+	})
 
 	return nil
 }
@@ -142,11 +143,19 @@ func AddLog(message string) {
 // AddDamageLog 데미지 로그 추가
 func AddDamageLog(message string, damage uint16, effectiveness float32, isCritical bool) {
 	if CurrentBattle != nil {
+		// 현재 포켓몬 상태의 스냅샷 저장
+		playerSnapshot := make([]model.Pokemon, len(PlayerPokemons))
+		copy(playerSnapshot, PlayerPokemons)
+		enemySnapshot := make([]model.Pokemon, len(EnemyPokemons))
+		copy(enemySnapshot, EnemyPokemons)
+
 		CurrentBattle.BattleLogs = append(CurrentBattle.BattleLogs, BattleLog{
-			Message:       message,
-			Damage:        damage,
-			Effectiveness: effectiveness,
-			IsCritical:    isCritical,
+			Message:        message,
+			Damage:         damage,
+			Effectiveness:  effectiveness,
+			IsCritical:     isCritical,
+			PlayerPokemons: playerSnapshot,
+			EnemyPokemons:  enemySnapshot,
 		})
 	}
 }
@@ -218,7 +227,43 @@ func PlayerUseMove(moveIndex int) error {
 
 	move := attacker.Moves[moveIndex]
 
-	// 공격 실행
+	// 속도 비교하여 선공권 결정
+	playerSpeed := attacker.Speed
+	enemySpeed := defender.Speed
+	playerFirst := playerSpeed >= enemySpeed
+
+	if playerFirst {
+		// 플레이어 선공
+		executePlayerAttack(attacker, defender, move)
+
+		if CurrentBattle.IsActive && defender.HP > 0 {
+			// 적이 살아있으면 적 턴
+			EnemyTurn()
+		}
+	} else {
+		// 적 선공
+		AddLog(fmt.Sprintf("상대의 %s가 선공을 잡았다!", defender.Name))
+		EnemyTurn()
+
+		if CurrentBattle.IsActive && attacker.HP > 0 {
+			// 플레이어가 살아있으면 플레이어 공격
+			executePlayerAttack(attacker, defender, move)
+		}
+	}
+
+	CheckBattleEnd()
+
+	if CurrentBattle.IsActive && !CurrentBattle.WaitingForSwitch {
+		// 다음 턴 시작
+		CurrentBattle.IsPlayerTurn = true
+		CurrentBattle.Turn++
+	}
+
+	return nil
+}
+
+// executePlayerAttack 플레이어 공격 실행
+func executePlayerAttack(attacker *model.Pokemon, defender *model.Pokemon, move model.Move) {
 	damage, effectiveness, isCrit := Attack(move, *attacker, defender)
 
 	logMsg := fmt.Sprintf("%s의 %s!", attacker.Name, move.KoName)
@@ -244,16 +289,6 @@ func PlayerUseMove(moveIndex int) error {
 			AddLog(fmt.Sprintf("상대는 %s를 꺼냈다!", EnemyPokemons[nextIndex].Name))
 		}
 	}
-
-	CheckBattleEnd()
-
-	if CurrentBattle.IsActive {
-		// 적 턴으로 전환
-		CurrentBattle.IsPlayerTurn = false
-		EnemyTurn()
-	}
-
-	return nil
 }
 
 // EnemyTurn 적 턴 실행
@@ -308,12 +343,6 @@ func EnemyTurn() {
 	}
 
 	CheckBattleEnd()
-
-	if CurrentBattle.IsActive && !CurrentBattle.WaitingForSwitch {
-		// 플레이어 턴으로 전환
-		CurrentBattle.IsPlayerTurn = true
-		CurrentBattle.Turn++
-	}
 }
 
 // GetBattleState 현재 배틀 상태 반환

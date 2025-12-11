@@ -101,12 +101,15 @@ func CompleteFloor() error {
 		return errors.New("배틀에서 승리하지 못했습니다")
 	}
 
+	fmt.Printf("[CompleteFloor] 호출됨 - 현재 층: %d\n", CurrentStageState.CurrentFloor)
+
 	// 플레이어 포켓몬 체력 회복
 	for i := range PlayerPokemons {
 		PlayerPokemons[i].Heal()
 	}
 
 	CurrentStageState.CurrentFloor++
+	fmt.Printf("[CompleteFloor] 층 증가 후: %d\n", CurrentStageState.CurrentFloor)
 
 	// 스테이지 완료 확인 (5층 클리어)
 	if CurrentStageState.CurrentFloor > FloorsPerStage {

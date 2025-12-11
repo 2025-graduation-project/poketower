@@ -26,7 +26,7 @@ func DrawStageEnemy() {
 	result := make([]model.Pokemon, 0, 3)
 	for i := 0; i < 3; i++ {
 		selectedPokemon := pokemons[rand.Intn(len(pokemons))]
-		selectedPokemon.SetInitialStats()
+		selectedPokemon.SetInitialStats(50)
 		result = append(result, selectedPokemon)
 	}
 

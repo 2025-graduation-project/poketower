@@ -27,18 +27,18 @@ type Pokemon struct {
 	MaxHP uint16 `gorm:"-" json:"maxHp"`
 }
 
-func (p *Pokemon) SetInitialStats() {
-	p.HP = stat.CalcHpStat(p.HP, 50)
+func (p *Pokemon) SetInitialStats(level int) {
+	p.HP = stat.CalcHpStat(p.HP, uint8(level))
 	p.MaxHP = p.HP
-	p.Attack = stat.CalcStat(p.Attack, 50)
-	p.Defense = stat.CalcStat(p.Defense, 50)
-	p.SpAttack = stat.CalcStat(p.SpAttack, 50)
-	p.SpDefense = stat.CalcStat(p.SpDefense, 50)
-	p.Speed = stat.CalcStat(p.Speed, 50)
+	p.Attack = stat.CalcStat(p.Attack, uint8(level))
+	p.Defense = stat.CalcStat(p.Defense, uint8(level))
+	p.SpAttack = stat.CalcStat(p.SpAttack, uint8(level))
+	p.SpDefense = stat.CalcStat(p.SpDefense, uint8(level))
+	p.Speed = stat.CalcStat(p.Speed, uint8(level))
 
+	// 기술 랜덤 선택 (최대 4개)
 	numAvailableMoves := len(p.Moves)
-
-	if numAvailableMoves <= 4 {
+	if numAvailableMoves == 0 {
 		return
 	}
 
@@ -56,7 +56,6 @@ func (p *Pokemon) SetInitialStats() {
 
 func (p *Pokemon) Heal() {
 	p.HP = p.MaxHP
-	fmt.Printf("%s의 체력이 회복되었습니다. 현재 체력: %d\n", p.Name, p.HP)
 }
 
 func (p Pokemon) GetStats() {
