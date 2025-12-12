@@ -133,7 +133,7 @@ const StarterSelect = ({ onConfirm }: StarterSelectProps) => {
       <div>스타팅 포켓몬 목록</div>
       <div className="grid grid-cols-auto-fill gap-16 p-20">
         {pokemons.map((data: Pokemon) => (
-          <div key={data.id} className="flex flex-col">
+          <div key={data.id} className="flex flex-col items-center">
             <img className="w-60" src={new URL('../../assets/img/pokemon/' + data.id + '.png', import.meta.url).href} />
             <div>{data.name}</div>
           </div>
