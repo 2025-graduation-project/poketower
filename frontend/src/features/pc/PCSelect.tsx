@@ -50,13 +50,11 @@ const PCSelect = ({ onComplete }: PCSelectProps) => {
   const allTypes = Array.from(new Set(pcPokemons.flatMap((p) => p.types.map((t) => t.name))));
 
   return (
-    <div className="w-screen h-screen p-20 flex flex-col gap-16">
+    <div className="w-screen h-screen p-20 flex flex-col gap-16" style={{ boxSizing: 'border-box' }}>
       <div className="text-center">
         <div className="text-24 font-bold mb-8">다음 스테이지 준비</div>
         <div className="text-16">PC에서 3마리를 선택하세요</div>
-        <div className="text-14 mt-8">
-          선택됨: {selectedIds.length}/3
-        </div>
+        <div className="text-14 mt-8">선택됨: {selectedIds.length}/3</div>
       </div>
 
       <div className="flex gap-16 justify-center">
@@ -93,18 +91,14 @@ const PCSelect = ({ onComplete }: PCSelectProps) => {
               <div className="text-14 font-bold mb-8">
                 #{pokemon.id} {pokemon.name}
               </div>
-              <div className="text-12 mb-4">
-                타입: {pokemon.types.map((t) => t.name).join(', ')}
-              </div>
+              <div className="text-12 mb-4">타입: {pokemon.types.map((t) => t.name).join(', ')}</div>
               <div className="text-12 mb-4">HP: {pokemon.maxHp}</div>
               <div className="text-12 mb-4">공격: {pokemon.attack}</div>
               <div className="text-12 mb-4">방어: {pokemon.defense}</div>
               <div className="text-12 mb-4">특공: {pokemon.spAttack}</div>
               <div className="text-12 mb-4">특방: {pokemon.spDefense}</div>
               <div className="text-12">스피드: {pokemon.speed}</div>
-              <div className="mt-8 text-10">
-                기술: {pokemon.moves.map((m) => m.koName).join(', ')}
-              </div>
+              <div className="mt-8 text-10">기술: {pokemon.moves.map((m) => m.koName).join(', ')}</div>
             </div>
           ))}
         </div>

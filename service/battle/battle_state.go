@@ -123,13 +123,40 @@ func CheckBattleEnd() {
 	if !HasAlivePokemon(PlayerPokemons) {
 		CurrentBattle.IsActive = false
 		CurrentBattle.BattleResult = "lose"
+
+		// 현재 포켓몬 상태의 스냅샷 저장
+		playerSnapshot := make([]model.Pokemon, len(PlayerPokemons))
+		copy(playerSnapshot, PlayerPokemons)
+		enemySnapshot := make([]model.Pokemon, len(EnemyPokemons))
+		copy(enemySnapshot, EnemyPokemons)
+
 		CurrentBattle.BattleLogs = append(CurrentBattle.BattleLogs,
-			BattleLog{Message: "배틀에서 패배했습니다..."})
+			BattleLog{
+				Message:        "배틀에서 패배했습니다...",
+				PlayerPokemons: playerSnapshot,
+				EnemyPokemons:  enemySnapshot,
+			})
 	} else if !HasAlivePokemon(EnemyPokemons) {
 		CurrentBattle.IsActive = false
 		CurrentBattle.BattleResult = "win"
+
+		// 현재 포켓몬 상태의 스냅샷 저장
+		playerSnapshot := make([]model.Pokemon, len(PlayerPokemons))
+		copy(playerSnapshot, PlayerPokemons)
+		enemySnapshot := make([]model.Pokemon, len(EnemyPokemons))
+		copy(enemySnapshot, EnemyPokemons)
+
 		CurrentBattle.BattleLogs = append(CurrentBattle.BattleLogs,
-			BattleLog{Message: "배틀에서 승리했습니다!"})
+			BattleLog{
+				Message:        "배틀에서 승리했습니다!",
+				PlayerPokemons: playerSnapshot,
+				EnemyPokemons:  enemySnapshot,
+			},
+			BattleLog{
+				Message:        "다음 층으로 올라갑니다...",
+				PlayerPokemons: playerSnapshot,
+				EnemyPokemons:  enemySnapshot,
+			})
 	}
 }
 

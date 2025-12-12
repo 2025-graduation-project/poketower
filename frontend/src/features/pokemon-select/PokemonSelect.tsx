@@ -38,13 +38,11 @@ const PokemonSelect = ({ onComplete }: PokemonSelectProps) => {
   };
 
   return (
-    <div className="w-screen h-screen p-20 flex flex-col gap-16">
+    <div className="w-screen h-screen p-20 flex flex-col gap-16" style={{ boxSizing: 'border-box' }}>
       <div className="text-center">
         <div className="text-24 font-bold mb-8">스테이지 클리어!</div>
         <div className="text-16">출현한 포켓몬 중 5마리를 선택하여 PC에 저장하세요</div>
-        <div className="text-14 mt-8">
-          선택됨: {selectedIndices.length}/5
-        </div>
+        <div className="text-14 mt-8">선택됨: {selectedIndices.length}/5</div>
       </div>
 
       <div className="flex-1 overflow-y-auto">
@@ -58,18 +56,14 @@ const PokemonSelect = ({ onComplete }: PokemonSelectProps) => {
               }`}
             >
               <div className="text-14 font-bold mb-8">{pokemon.name}</div>
-              <div className="text-12 mb-4">
-                타입: {pokemon.types.map((t) => t.name).join(', ')}
-              </div>
+              <div className="text-12 mb-4">타입: {pokemon.types.map((t) => t.name).join(', ')}</div>
               <div className="text-12 mb-4">HP: {pokemon.maxHp}</div>
               <div className="text-12 mb-4">공격: {pokemon.attack}</div>
               <div className="text-12 mb-4">방어: {pokemon.defense}</div>
               <div className="text-12 mb-4">특공: {pokemon.spAttack}</div>
               <div className="text-12 mb-4">특방: {pokemon.spDefense}</div>
               <div className="text-12">스피드: {pokemon.speed}</div>
-              <div className="mt-8 text-10">
-                기술: {pokemon.moves.map((m) => m.koName).join(', ')}
-              </div>
+              <div className="mt-8 text-10">기술: {pokemon.moves.map((m) => m.koName).join(', ')}</div>
             </div>
           ))}
         </div>

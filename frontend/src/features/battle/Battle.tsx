@@ -149,10 +149,15 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
   }, []);
 
   useEffect(() => {
+    const allLogsDisplayed = battleState?.battleLogs && displayedLogs.length === battleState.battleLogs.length;
+    
     console.log('[useEffect] 배틀 상태 변경:', {
       isActive: battleState?.isActive,
       battleResult: battleState?.battleResult,
       isProcessingLogs,
+      totalLogs: battleState?.battleLogs?.length,
+      displayedLogsCount: displayedLogs.length,
+      allLogsDisplayed,
       isHandlingBattleEnd: isHandlingBattleEndRef.current,
       isStartingFloor: isStartingFloorRef.current,
       lastResult: lastBattleResultRef.current
@@ -162,6 +167,7 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
         !battleState.isActive && 
         battleState.battleResult !== 'ongoing' && 
         !isProcessingLogs && 
+        allLogsDisplayed &&
         !isHandlingBattleEndRef.current &&
         !isStartingFloorRef.current &&
         lastBattleResultRef.current !== battleState.battleResult) {
@@ -169,7 +175,7 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
       lastBattleResultRef.current = battleState.battleResult;
       handleBattleEnd();
     }
-  }, [battleState?.isActive, battleState?.battleResult, isProcessingLogs]);
+  }, [battleState?.isActive, battleState?.battleResult, isProcessingLogs, displayedLogs.length]);
 
   useEffect(() => {
     if (battleLogRef.current) {
@@ -204,7 +210,9 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
       }
 
       if (logQueueRef.current.length > 0) {
-        setTimeout(processQueue, 1000);
+        // "다음 층으로 올라갑니다..." 메시지는 1초 대기
+        const delay = nextLog.message === "다음 층으로 올라갑니다..." ? 1000 : 1000;
+        setTimeout(processQueue, delay);
       } else {
         setIsProcessingLogs(false);
       }
