@@ -53,7 +53,7 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
     }
     isStartingFloorRef.current = true;
     console.log('[startNewFloor] 시작');
-    
+
     setIsLoading(true);
     // 상태 초기화
     setDisplayedLogs([]);
@@ -150,7 +150,7 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
 
   useEffect(() => {
     const allLogsDisplayed = battleState?.battleLogs && displayedLogs.length === battleState.battleLogs.length;
-    
+
     console.log('[useEffect] 배틀 상태 변경:', {
       isActive: battleState?.isActive,
       battleResult: battleState?.battleResult,
@@ -160,17 +160,19 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
       allLogsDisplayed,
       isHandlingBattleEnd: isHandlingBattleEndRef.current,
       isStartingFloor: isStartingFloorRef.current,
-      lastResult: lastBattleResultRef.current
+      lastResult: lastBattleResultRef.current,
     });
-    
-    if (battleState && 
-        !battleState.isActive && 
-        battleState.battleResult !== 'ongoing' && 
-        !isProcessingLogs && 
-        allLogsDisplayed &&
-        !isHandlingBattleEndRef.current &&
-        !isStartingFloorRef.current &&
-        lastBattleResultRef.current !== battleState.battleResult) {
+
+    if (
+      battleState &&
+      !battleState.isActive &&
+      battleState.battleResult !== 'ongoing' &&
+      !isProcessingLogs &&
+      allLogsDisplayed &&
+      !isHandlingBattleEndRef.current &&
+      !isStartingFloorRef.current &&
+      lastBattleResultRef.current !== battleState.battleResult
+    ) {
       console.log('[useEffect] 배틀 종료 감지, handleBattleEnd 호출');
       lastBattleResultRef.current = battleState.battleResult;
       handleBattleEnd();
@@ -211,7 +213,7 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
 
       if (logQueueRef.current.length > 0) {
         // "다음 층으로 올라갑니다..." 메시지는 1초 대기
-        const delay = nextLog.message === "다음 층으로 올라갑니다..." ? 1000 : 1000;
+        const delay = nextLog.message === '다음 층으로 올라갑니다...' ? 1000 : 1000;
         setTimeout(processQueue, delay);
       } else {
         setIsProcessingLogs(false);
@@ -231,7 +233,7 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
   }
 
   return (
-    <div className="w-screen h-screen p-20 flex flex-col gap-16" style={{ boxSizing: 'border-box' }}>
+    <div className="w-screen h-screen p-5 flex flex-col gap-16" style={{ boxSizing: 'border-box' }}>
       <div className="flex justify-between items-center">
         <div>
           <div className="text-20 font-bold">
@@ -245,10 +247,10 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
       </div>
 
       <div className="flex-1 flex gap-16">
-        <div className="flex-1 border p-16 rounded">
-          <div className="text-16 font-bold mb-8">적 포켓몬</div>
+        <div className="flex-1 border p-4 rounded">
+          <div className="text-16 font-bold mb-2">적 포켓몬</div>
           {currentEnemyPokemon && (
-            <div className="mb-16">
+            <div className="mb-4">
               <div className="text-14 font-bold">{currentEnemyPokemon.name}</div>
               <div className="text-12">
                 HP: {currentEnemyPokemon.hp}/{currentEnemyPokemon.maxHp}
@@ -263,7 +265,7 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
           )}
           <div className="grid grid-cols-3 gap-8">
             {enemyPokemons.map((p, i) => (
-              <div key={i} className={`p-8 border rounded ${i === battleState.enemyCurrentIndex ? 'bg-blue-100' : ''}`}>
+              <div key={i} className={`p-2 border rounded ${i === battleState.enemyCurrentIndex ? 'bg-blue-100' : ''}`}>
                 <div className="text-12">{p.name}</div>
                 <div className="text-10">
                   HP: {p.hp}/{p.maxHp}
@@ -273,10 +275,10 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
           </div>
         </div>
 
-        <div className="flex-1 border p-16 rounded">
-          <div className="text-16 font-bold mb-8">내 포켓몬</div>
+        <div className="flex-1 border p-4 rounded">
+          <div className="text-16 font-bold mb-2">내 포켓몬</div>
           {currentPlayerPokemon && (
-            <div className="mb-16">
+            <div className="mb-4">
               <div className="text-14 font-bold">{currentPlayerPokemon.name}</div>
               <div className="text-12">
                 HP: {currentPlayerPokemon.hp}/{currentPlayerPokemon.maxHp}
@@ -293,7 +295,7 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
             {playerPokemons.map((p, i) => (
               <div
                 key={i}
-                className={`p-8 border rounded ${!isProcessingLogs && battleState.waitingForSwitch && p.hp > 0 && i !== battleState.playerCurrentIndex ? 'cursor-pointer' : ''} ${i === battleState.playerCurrentIndex ? 'bg-blue-100' : ''}`}
+                className={`p-2 border rounded ${!isProcessingLogs && battleState.waitingForSwitch && p.hp > 0 && i !== battleState.playerCurrentIndex ? 'cursor-pointer' : ''} ${i === battleState.playerCurrentIndex ? 'bg-blue-100' : ''}`}
                 onClick={() => !isProcessingLogs && battleState.waitingForSwitch && p.hp > 0 && handleSwitchPokemon(i)}
               >
                 <div className="text-12">{p.name}</div>
@@ -306,10 +308,10 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
         </div>
       </div>
 
-      <div ref={battleLogRef} className="border p-16 rounded h-200 overflow-y-auto">
-        <div className="text-14 font-bold mb-8">배틀 로그</div>
+      <div ref={battleLogRef} className="border p-4 rounded h-200 overflow-y-auto">
+        <div className="text-14 font-bold mb-2">배틀 로그</div>
         {displayedLogs.map((log, i) => (
-          <div key={i} className="text-12 mb-4">
+          <div key={i} className="text-12 mb-1">
             {log.message}
             {log.damage && <span className="text-red-500"> (데미지: {log.damage})</span>}
             {log.isCritical && <span className="text-yellow-500"> 급소!</span>}
@@ -317,18 +319,18 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
         ))}
       </div>
 
-      <div className="border p-16 rounded">
+      <div className="border p-4 rounded">
         {battleState.waitingForSwitch ? (
           <div className="text-14 text-center">교체할 포켓몬을 선택하세요</div>
         ) : battleState.isPlayerTurn && currentPlayerPokemon ? (
           <div>
-            <div className="text-14 font-bold mb-8">기술 선택</div>
+            <div className="text-14 font-bold mb-2">기술 선택</div>
             <div className="grid grid-cols-2 gap-8">
               {currentPlayerPokemon.moves.map((move, i) => (
                 <button
                   key={i}
                   onClick={() => handleUseMove(i)}
-                  className="p-12 border rounded hover:bg-gray-100"
+                  className="p-3 border rounded hover:bg-gray-100"
                   disabled={!battleState.isPlayerTurn || isProcessingLogs}
                 >
                   <div className="text-12 font-bold">{move.koName}</div>

@@ -50,24 +50,24 @@ const PCSelect = ({ onComplete }: PCSelectProps) => {
   const allTypes = Array.from(new Set(pcPokemons.flatMap((p) => p.types.map((t) => t.name))));
 
   return (
-    <div className="w-screen h-screen p-20 flex flex-col gap-16" style={{ boxSizing: 'border-box' }}>
+    <div className="w-screen h-screen p-5 flex flex-col gap-16" style={{ boxSizing: 'border-box' }}>
       <div className="text-center">
-        <div className="text-24 font-bold mb-8">다음 스테이지 준비</div>
+        <div className="text-24 font-bold mb-2">다음 스테이지 준비</div>
         <div className="text-16">PC에서 3마리를 선택하세요</div>
-        <div className="text-14 mt-8">선택됨: {selectedIds.length}/3</div>
+        <div className="text-14 mt-2">선택됨: {selectedIds.length}/3</div>
       </div>
 
       <div className="flex gap-16 justify-center">
         <div>
           <label className="mr-8">정렬:</label>
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value as 'id' | 'type')} className="border p-4">
+          <select value={sortBy} onChange={(e) => setSortBy(e.target.value as 'id' | 'type')} className="border p-1">
             <option value="id">도감번호순</option>
             <option value="type">타입별</option>
           </select>
         </div>
         <div>
           <label className="mr-8">필터:</label>
-          <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="border p-4">
+          <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="border p-1">
             <option value="all">전체</option>
             {allTypes.map((type) => (
               <option key={type} value={type}>
@@ -84,21 +84,21 @@ const PCSelect = ({ onComplete }: PCSelectProps) => {
             <div
               key={pokemon.id}
               onClick={() => toggleSelection(pokemon.id)}
-              className={`p-16 border rounded cursor-pointer ${
+              className={`p-4 border rounded cursor-pointer ${
                 selectedIds.includes(pokemon.id) ? 'bg-blue-200 border-blue-500' : 'hover:bg-gray-100'
               }`}
             >
-              <div className="text-14 font-bold mb-8">
+              <div className="text-14 font-bold mb-2">
                 #{pokemon.id} {pokemon.name}
               </div>
-              <div className="text-12 mb-4">타입: {pokemon.types.map((t) => t.name).join(', ')}</div>
-              <div className="text-12 mb-4">HP: {pokemon.maxHp}</div>
-              <div className="text-12 mb-4">공격: {pokemon.attack}</div>
-              <div className="text-12 mb-4">방어: {pokemon.defense}</div>
-              <div className="text-12 mb-4">특공: {pokemon.spAttack}</div>
-              <div className="text-12 mb-4">특방: {pokemon.spDefense}</div>
+              <div className="text-12 mb-1">타입: {pokemon.types.map((t) => t.name).join(', ')}</div>
+              <div className="text-12 mb-1">HP: {pokemon.maxHp}</div>
+              <div className="text-12 mb-1">공격: {pokemon.attack}</div>
+              <div className="text-12 mb-1">방어: {pokemon.defense}</div>
+              <div className="text-12 mb-1">특공: {pokemon.spAttack}</div>
+              <div className="text-12 mb-1">특방: {pokemon.spDefense}</div>
               <div className="text-12">스피드: {pokemon.speed}</div>
-              <div className="mt-8 text-10">기술: {pokemon.moves.map((m) => m.koName).join(', ')}</div>
+              <div className="mt-2 text-10">기술: {pokemon.moves.map((m) => m.koName).join(', ')}</div>
             </div>
           ))}
         </div>
@@ -108,7 +108,7 @@ const PCSelect = ({ onComplete }: PCSelectProps) => {
         <button
           onClick={handleConfirm}
           disabled={selectedIds.length !== 3}
-          className="px-32 py-16 bg-blue-500 text-white rounded disabled:bg-gray-300"
+          className="px-8 py-4 bg-blue-500 text-white rounded disabled:bg-gray-300"
         >
           선택 완료
         </button>
