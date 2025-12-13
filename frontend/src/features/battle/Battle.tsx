@@ -225,7 +225,7 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
 
       <div className="flex-1 flex gap-4 min-h-0">
         <div className="flex-1 border border-red-200 bg-white p-4 rounded-2xl shadow-sm flex flex-col">
-          <div className="text-base font-bold text-red-600 mb-2 flex items-center gap-2">
+          <div className="text-base font-bold text-red-600 flex items-center gap-2">
             <span>⚔️ 적 포켓몬</span>
           </div>
 
@@ -277,7 +277,7 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
         </div>
 
         <div className="flex-1 border border-blue-200 bg-white p-4 rounded-2xl shadow-sm flex flex-col">
-          <div className="text-base font-bold text-blue-600 mb-2 flex items-center gap-2">
+          <div className="text-base font-bold text-blue-600 flex items-center gap-2">
             <span>🛡️ 내 포켓몬</span>
           </div>
 
@@ -336,10 +336,8 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
 
       <div
         ref={battleLogRef}
-        // [수정] h-30 -> h-32 (Tailwind 표준), shrink-0, relative, p-0 추가
         className="border border-gray-300 bg-gray-900 p-0 rounded-xl h-32 overflow-y-auto shadow-inner shrink-0 relative"
       >
-        {/* [이전 수정사항 유지] sticky 헤더에 배경색 및 z-index 추가 */}
         <div className="text-xs font-bold text-gray-400 p-3 sticky top-0 bg-gray-900 z-10 border-b border-gray-700">
           📜 배틀 로그
         </div>
@@ -354,9 +352,9 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
         </div>
       </div>
 
-      <div className="border border-gray-200 bg-white p-4 rounded-xl shadow-lg shrink-0">
+      <div className="border border-gray-200 bg-white p-4 rounded-xl shadow-lg shrink-0 min-h-[200px] flex flex-col justify-center">
         {battleState.waitingForSwitch && !isProcessingLogs ? (
-          <div className="text-sm text-center font-bold text-blue-600 animate-pulse py-2">
+          <div className="text-sm text-center font-bold text-blue-600 animate-pulse w-full">
             🔄 교체할 포켓몬을 선택하세요!
           </div>
         ) : battleState.isPlayerTurn && currentPlayerPokemon && !battleState.waitingForSwitch ? (
@@ -382,7 +380,7 @@ const Battle = ({ onStageComplete, onGameOver }: BattleProps) => {
             </div>
           </div>
         ) : (
-          <div className="text-sm text-center text-gray-500 py-2 flex items-center justify-center gap-2">
+          <div className="text-sm text-center text-gray-500 flex items-center justify-center gap-2 w-full">
             {isProcessingLogs ? '📜 배틀 진행 중...' : '⏳ 적의 행동을 기다리는 중...'}
           </div>
         )}
