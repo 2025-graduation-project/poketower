@@ -3,7 +3,7 @@ import { StarterSelectProps } from './type';
 import { Pokemon } from '@/entities/pokemon/type';
 import { ChooseStarting, DrawStarting, GetStartingPokemons } from '@wails/App';
 
-const StarterSelect = ({ onConfirm }: StarterSelectProps) => {
+const StarterSelect = ({ onConfirm, onBack }: StarterSelectProps) => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [reelIndexes, setReelIndexes] = useState<number[]>([-1, -1, -1]);
@@ -114,7 +114,25 @@ const StarterSelect = ({ onConfirm }: StarterSelectProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-8 overflow-y-auto">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-8 overflow-y-auto relative">
+      <button
+        onClick={onBack}
+        disabled={isSpinning}
+        className={`absolute top-8 left-8 flex items-center gap-2 font-bold text-gray-500 hover:text-blue-600 transition-colors z-20 ${isSpinning ? 'opacity-50 cursor-not-allowed' : ''}`}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+        </svg>
+        <span className="text-lg">처음으로</span>
+      </button>
+
       <h1 className="text-3xl font-extrabold text-gray-800 mb-6 drop-shadow-sm">함께할 포켓몬 세 마리를 뽑아주세요!</h1>
 
       <div className="bg-white p-8 rounded-3xl shadow-xl border-4 border-blue-100 flex flex-col items-center mb-10 relative overflow-hidden">

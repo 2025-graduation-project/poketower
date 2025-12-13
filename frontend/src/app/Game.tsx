@@ -13,7 +13,9 @@ const Game = () => {
   return (
     <div>
       {stage === 'WELCOME' && <WelcomeScreen onStart={() => setStage('SELECT_STARTERS')} />}
-      {stage === 'SELECT_STARTERS' && <StarterSelect onConfirm={() => setStage('BATTLE')} />}
+      {stage === 'SELECT_STARTERS' && (
+        <StarterSelect onConfirm={() => setStage('BATTLE')} onBack={() => setStage('WELCOME')} />
+      )}
       {stage === 'BATTLE' && (
         <Battle onStageComplete={() => setStage('SELECT_POKEMON')} onGameOver={() => setStage('LEADERBOARD')} />
       )}
