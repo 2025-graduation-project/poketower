@@ -19,8 +19,8 @@ const PCSelect = ({ onComplete }: PCSelectProps) => {
       setPcPokemons(pokemon);
 
       const stage = await GetStageState();
-      if (stage && stage.nextStageType) {
-        setNextStageType(stage.nextStageType.name);
+      if (stage && stage.stageType) {
+        setNextStageType(stage.stageType.name);
       }
     };
     loadData();
