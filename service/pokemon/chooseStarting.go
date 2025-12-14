@@ -17,7 +17,7 @@ func ChooseStarting(id []int) {
 	}
 
 	for i := range pokemons {
-		pokemons[i].SetInitialStats(100)
+		pokemons[i].SetInitialStats(65)
 	}
 
 	battle.PlayerPokemons = pokemons
