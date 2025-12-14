@@ -20,7 +20,7 @@ func main() {
 	err := wails.Run(&options.App{
 		Title:  "포켓타워",
 		Width:  1024,
-		Height: 768,
+		Height: 860,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
